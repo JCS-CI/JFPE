@@ -2,4 +2,3 @@ language: java
 script: gradle clean all
 jdk:
   - oraclejdk8
-  - openjdk8
