@@ -1,0 +1,31 @@
+group 'io.github.jcs-ci'
+version '0.0.1-SNAPSHOT'
+
+apply plugin: 'java'
+
+project.ext.jomlVersion = "1.8.4"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+
+    // JOML dependencies START
+    compile "org.joml:joml:${jomlVersion}"
+    // JOML dependencies END
+}
+
+task all(dependsOn: ['jar', 'sourcesJar', 'javadocJar'])
+defaultTasks 'all'
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}

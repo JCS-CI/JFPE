@@ -1,4 +1,4 @@
 language: java
-script: gradle clean all
+script: gradle -b travis.gradle clean all
 jdk:
   - oraclejdk8

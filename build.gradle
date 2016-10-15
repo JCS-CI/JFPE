@@ -1,5 +1,5 @@
 group 'io.github.jcs-ci'
-version '0.0.1-SNAPSHOT'
+version '0.0.1'
 
 apply plugin: 'java'
 apply plugin: 'maven'
@@ -33,7 +33,11 @@ task sourcesJar(type: Jar) {
 }
 
 artifacts {
-    archives javadocJar, sourcesJar
+    archives jar, javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
 }
 
 uploadArchives {
