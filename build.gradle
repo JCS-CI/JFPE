@@ -1,7 +1,9 @@
-group 'com.jcs'
-version '0.0.1'
+group 'io.github.jcs-ci'
+version '0.0.1-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 project.ext.jomlVersion = "1.8.4"
 
@@ -28,4 +30,56 @@ task javadocJar(type: Jar) {
 task sourcesJar(type: Jar) {
     classifier = 'sources'
     from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+
+            beforeDeployment {
+                MavenDeployment deployment -> signing.signPom(deployment)
+            }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'Jcs Franklin Physics Engine'
+                packaging 'jar'
+                artifactId 'jfpe'
+                description 'Jcs Franklin Physics Engine library for OpenGL with JOML'
+                url 'https://jcs-ci.github.io/JFPE/'
+
+                scm {
+                    connection 'scm:git:https://github.com/JCS-CI/JFPE.git'
+                    developerConnection 'scm:git:https://github.com/JCS-CI/JFPE.git'
+                    url 'https://github.com/JCS-CI/JFPE'
+                }
+
+                licenses {
+                    license {
+                        name 'The MIT License (MIT)'
+                        url 'https://opensource.org/licenses/MIT'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'JIbarra'
+                        name 'Juan Ibarra'
+                        email 'ibarrajj@gmail.com'
+                    }
+                }
+            }
+        }
+    }
 }
